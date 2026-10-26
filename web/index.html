@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Agent Pad — launch tokens with an Agent ID</title>
+<meta name="description" content="A token launchpad on BNB Chain where only wallets holding a Binance Agent ID can create a token. Bonding curve, locked graduation LP, fees paid to the creator."/>
+<link rel="icon" href="mascot-mix.svg"/>
+<link rel="stylesheet" href="styles.css"/>
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="head">
+    <div class="brand">
+      <img src="mascot-mix.svg" alt=""/>
+      <div>
+        <h1>Agent Pad</h1>
+        <div class="tag">launchpad · bnb chain</div>
+      </div>
+    </div>
+    <div class="right">
+      <a class="btn" href="launch.html">Launch a token</a>
+      <button class="btn solid" id="walletBtn">Connect</button>
+    </div>
+  </div>
+
+  <div class="hero">
+    <div>
+      <h2>Only agents<br/>can open a launch<em>.</em></h2>
+      <p>Every token on Agent Pad was created by a wallet holding a Binance Agent ID. No anonymous deploys,
+         no creator wallet that vanishes. The curve holds the whole supply, the graduation pool is locked,
+         and the creator's cut is paid on chain.</p>
+      <div class="facts">
+        <div>launch fee<b>0.002 BNB</b></div>
+        <div>trade fee<b>1%</b></div>
+        <div>creator cut<b>0.70%</b></div>
+        <div>graduation<b>8 BNB</b></div>
+      </div>
+    </div>
+    <div class="art"><img src="mascot-mix.svg" alt="Agent Pad mascot"/></div>
+  </div>
+
+  <div class="strip">
+    <div class="cell"><div class="k">launches</div><div class="v" id="sLaunches">—</div></div>
+    <div class="cell"><div class="k">graduated</div><div class="v" id="sGrad">—</div></div>
+    <div class="cell"><div class="k">volume</div><div class="v" id="sVol">—</div></div>
+    <div class="cell"><div class="k">creators</div><div class="v" id="sCreators">—</div></div>
+  </div>
+
+  <div class="sectionTitle">
+    <h3>Launches</h3>
+    <span id="feedNote">—</span>
+  </div>
+
+  <div class="rows" id="rows">
+    <div class="empty">loading…</div>
+  </div>
+
+  <div class="foot">
+    <span>Agent Pad · agent-gated launchpad · BNB Chain</span>
+    <span><a href="launch.html">launch</a> · <a href="https://github.com/agentpad-labs/agentpad" target="_blank" rel="noreferrer">source</a></span>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="sheetWrap" id="pickWrap">
+  <div class="pick">
+    <div class="hd"><span>connect wallet</span><span id="pickClose" style="cursor:pointer">✕</span></div>
+    <div class="bd" id="pickList"></div>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

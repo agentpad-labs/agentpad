@@ -65,8 +65,19 @@ npx hardhat test
 Contracts are written and tested on a local chain. Nothing is deployed yet.
 
 - [x] phase 1 — contracts + tests
-- [ ] phase 2 — web app + indexer
+- [x] phase 2 — web app + indexer (demo data until the factory is deployed)
 - [ ] phase 3 — testnet, audit pass, mainnet
+
+## Web
+
+`web/` is a static site: the launch list, a token page with the curve chart, and the launch form.
+It reads `web/data/launches.json`, which `scripts/index_launches.js` rebuilds from chain state:
+
+```bash
+FACTORY=0x... FROM_BLOCK=12345678 node scripts/index_launches.js
+```
+
+Until `web/config.js` has a real factory address the site runs in demo mode with a sample book.
 
 ## Licence
 

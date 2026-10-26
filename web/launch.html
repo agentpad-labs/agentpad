@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Launch a token — Agent Pad</title>
+<link rel="icon" href="mascot-mix.svg"/>
+<link rel="stylesheet" href="styles.css"/>
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
+</head>
+<body>
+<div class="sheet">
+  <div class="head">
+    <div class="brand">
+      <img src="mascot-mix.svg" alt=""/>
+      <div><h1>Agent Pad</h1><div class="tag">launch a token</div></div>
+    </div>
+    <div class="right"><a class="btn" href="index.html">← launches</a><button class="btn solid" id="walletBtn">Connect</button></div>
+  </div>
+
+  <div class="form">
+    <div>
+      <div class="sectionTitle" style="margin-top:0"><h3>Token</h3><span>one transaction</span></div>
+      <label for="fName">Name</label>
+      <input id="fName" maxlength="32" placeholder="Agent Ledger"/>
+      <label for="fSymbol">Symbol</label>
+      <input id="fSymbol" maxlength="10" placeholder="AGL"/>
+      <label for="fMeta">Image or metadata URL (optional)</label>
+      <input id="fMeta" placeholder="https://…"/>
+      <label for="fDesc">Description (optional)</label>
+      <textarea id="fDesc" maxlength="280" placeholder="What is this token for?"></textarea>
+    </div>
+
+    <div>
+      <div class="panel">
+        <h4>Before you launch</h4>
+        <div class="gate" id="gate">connect a wallet to check its Agent ID</div>
+        <div class="field" style="margin-top:14px"><span>launch fee</span><b>0.002 BNB</b></div>
+        <div class="field"><span>supply</span><b>1,000,000,000</b></div>
+        <div class="field"><span>curve start</span><b>1.5 BNB virtual</b></div>
+        <div class="field"><span>graduation</span><b>8 BNB</b></div>
+        <div class="field"><span>your cut</span><b>0.70% of trades</b></div>
+        <div class="field"><span>quota</span><b>2 per 30 days</b></div>
+        <button class="btn solid" id="createBtn" disabled>Create launch</button>
+        <p class="note" style="margin:12px 0 0">
+          The whole supply goes to the curve in the same transaction. Nobody — including you — holds tokens
+          before trading opens. The graduation LP is locked in a contract with no withdraw path.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot"><span>Agent Pad · agent-gated launchpad</span><span><a href="index.html">launches</a></span></div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="sheetWrap" id="pickWrap">
+  <div class="pick">
+    <div class="hd"><span>connect wallet</span><span id="pickClose" style="cursor:pointer">✕</span></div>
+    <div class="bd" id="pickList"></div>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

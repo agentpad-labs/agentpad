@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Token — Agent Pad</title>
+<link rel="icon" href="mascot-mix.svg"/>
+<link rel="stylesheet" href="styles.css"/>
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
+</head>
+<body>
+<div class="sheet">
+  <div class="head">
+    <div class="brand">
+      <img src="mascot-mix.svg" alt=""/>
+      <div><h1>Agent Pad</h1><div class="tag" id="crumb">token</div></div>
+    </div>
+    <div class="right"><a class="btn" href="index.html">← launches</a><button class="btn solid" id="walletBtn">Connect</button></div>
+  </div>
+
+  <div class="tokHead">
+    <div>
+      <h2 id="tName">—</h2>
+      <div class="sym" id="tSym">—</div>
+      <p class="desc" id="tDesc">—</p>
+      <div class="facts" style="display:flex;gap:24px;margin-top:20px;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2)">
+        <div>creator<b id="tCreator" style="display:block;font-size:13px;letter-spacing:0;color:var(--ink);margin-top:4px">—</b></div>
+        <div>launched<b id="tWhen" style="display:block;font-size:13px;letter-spacing:0;color:var(--ink);margin-top:4px">—</b></div>
+        <div>token<b id="tAddr" style="display:block;font-size:13px;letter-spacing:0;color:var(--ink);margin-top:4px">—</b></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h4>Trade the curve</h4>
+      <div class="field"><span>price</span><b id="pPrice">—</b></div>
+      <div class="field"><span>graduation</span><b id="pGrad">—</b></div>
+      <div class="field"><span>phase</span><b id="pPhase">—</b></div>
+      <input class="amt" id="amtIn" placeholder="0.0" inputmode="decimal"/>
+      <div class="two">
+        <button class="btn solid" id="buyBtn">Buy</button>
+        <button class="btn red" id="sellBtn">Sell</button>
+      </div>
+      <p class="note" style="margin:12px 0 0" id="quoteNote">—</p>
+    </div>
+  </div>
+
+  <div class="chart">
+    <div class="top"><span>price · from curve trades</span><span id="chartNote">—</span></div>
+    <svg id="chart" viewBox="0 0 800 220" preserveAspectRatio="none"></svg>
+  </div>
+
+  <div class="sectionTitle"><h3>Trades</h3><span id="tradeCount">—</span></div>
+  <div class="rows" id="trades"><div class="empty">no trades yet</div></div>
+
+  <div class="foot"><span>Agent Pad · agent-gated launchpad</span><span><a href="index.html">launches</a></span></div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="sheetWrap" id="pickWrap">
+  <div class="pick">
+    <div class="hd"><span>connect wallet</span><span id="pickClose" style="cursor:pointer">✕</span></div>
+    <div class="bd" id="pickList"></div>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
