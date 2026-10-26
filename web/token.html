@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -11,11 +11,23 @@
 <body>
 <div class="sheet">
   <div class="head">
-    <div class="brand">
-      <img src="mascot-mix.svg" alt=""/>
-      <div><h1>Agent Pad</h1><div class="tag" id="crumb">token</div></div>
+    <a class="brand" href="index.html">
+      <img src="mascot-mix.svg" alt="Agent Pad"/>
+      <div><h1>Agent Pad</h1><div class="tag" id="crumb" data-i18n="tok.crumb">token</div></div>
+    </a>
+    <div class="right">
+      <div class="lang">
+        <button class="langBtn" aria-haspopup="true"><span>EN</span> ▾</button>
+        <div class="langMenu">
+          <button data-lang="en">English</button>
+          <button data-lang="id">Bahasa Indonesia</button>
+          <button data-lang="zh">中文</button>
+        </div>
+      </div>
+      <button class="iconBtn" id="themeBtn" aria-label="Toggle theme"><i>☀</i></button>
+      <a class="btn" href="index.html">←</a>
+      <button class="btn solid" id="walletBtn" data-i18n="nav.connect">Connect</button>
     </div>
-    <div class="right"><a class="btn" href="index.html">← launches</a><button class="btn solid" id="walletBtn">Connect</button></div>
   </div>
 
   <div class="tokHead">
@@ -23,47 +35,51 @@
       <h2 id="tName">—</h2>
       <div class="sym" id="tSym">—</div>
       <p class="desc" id="tDesc">—</p>
-      <div class="facts" style="display:flex;gap:24px;margin-top:20px;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2)">
-        <div>creator<b id="tCreator" style="display:block;font-size:13px;letter-spacing:0;color:var(--ink);margin-top:4px">—</b></div>
-        <div>launched<b id="tWhen" style="display:block;font-size:13px;letter-spacing:0;color:var(--ink);margin-top:4px">—</b></div>
-        <div>token<b id="tAddr" style="display:block;font-size:13px;letter-spacing:0;color:var(--ink);margin-top:4px">—</b></div>
+      <div class="meta">
+        <div><span data-i18n="tok.creator">creator</span><b id="tCreator">—</b></div>
+        <div><span data-i18n="tok.when">launched</span><b id="tWhen">—</b></div>
+        <div><span data-i18n="tok.addr">token</span><b id="tAddr">—</b></div>
       </div>
     </div>
 
     <div class="panel">
-      <h4>Trade the curve</h4>
-      <div class="field"><span>price</span><b id="pPrice">—</b></div>
-      <div class="field"><span>graduation</span><b id="pGrad">—</b></div>
-      <div class="field"><span>phase</span><b id="pPhase">—</b></div>
+      <h4 data-i18n="tok.trade">Trade the curve</h4>
+      <div class="field"><span data-i18n="tok.price">price</span><b id="pPrice">—</b></div>
+      <div class="field"><span data-i18n="tok.grad">graduation</span><b id="pGrad">—</b></div>
+      <div class="field"><span data-i18n="tok.phase">phase</span><b id="pPhase">—</b></div>
       <input class="amt" id="amtIn" placeholder="0.0" inputmode="decimal"/>
       <div class="two">
-        <button class="btn solid" id="buyBtn">Buy</button>
-        <button class="btn red" id="sellBtn">Sell</button>
+        <button class="btn solid" id="buyBtn" data-i18n="tok.buy">Buy</button>
+        <button class="btn red" id="sellBtn" data-i18n="tok.sell">Sell</button>
       </div>
-      <p class="note" style="margin:12px 0 0" id="quoteNote">—</p>
+      <p class="note" style="margin:12px 0 0" id="quoteNote" data-i18n="tok.quote">enter an amount to quote</p>
     </div>
   </div>
 
-  <div class="chart">
-    <div class="top"><span>price · from curve trades</span><span id="chartNote">—</span></div>
+  <div class="chart reveal">
+    <div class="top"><span data-i18n="tok.chartNote">price · from curve trades</span><span id="chartNote">—</span></div>
     <svg id="chart" viewBox="0 0 800 220" preserveAspectRatio="none"></svg>
   </div>
 
-  <div class="sectionTitle"><h3>Trades</h3><span id="tradeCount">—</span></div>
-  <div class="rows" id="trades"><div class="empty">no trades yet</div></div>
+  <div class="sectionTitle"><h3 data-i18n="tok.trades">Trades</h3><span id="tradeCount">—</span></div>
+  <div class="rows" id="trades"><div class="empty" data-i18n="tok.noTrades">no trades yet</div></div>
 
-  <div class="foot"><span>Agent Pad · agent-gated launchpad</span><span><a href="index.html">launches</a></span></div>
+  <div class="foot">
+    <span data-i18n="foot.left">Agent Pad · agent-gated launchpad</span>
+    <span><a href="index.html" data-i18n="list.t">Launches</a></span>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
 <div class="sheetWrap" id="pickWrap">
   <div class="pick">
-    <div class="hd"><span>connect wallet</span><span id="pickClose" style="cursor:pointer">✕</span></div>
+    <div class="hd"><span data-i18n="pick.title">connect wallet</span><span id="pickClose" style="cursor:pointer">✕</span></div>
     <div class="bd" id="pickList"></div>
   </div>
 </div>
 
 <script src="config.js"></script>
+<script src="i18n.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

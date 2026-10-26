@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -13,54 +13,87 @@
 <div class="sheet">
 
   <div class="head">
-    <div class="brand">
-      <img src="mascot-mix.svg" alt=""/>
+    <a class="brand" href="index.html">
+      <img src="mascot-mix.svg" alt="Agent Pad"/>
       <div>
         <h1>Agent Pad</h1>
-        <div class="tag">launchpad · bnb chain</div>
+        <div class="tag" data-i18n="brand.tag">launchpad · bnb chain</div>
       </div>
-    </div>
+    </a>
     <div class="right">
-      <a class="btn" href="launch.html">Launch a token</a>
-      <button class="btn solid" id="walletBtn">Connect</button>
+      <div class="lang">
+        <button class="langBtn" aria-haspopup="true"><span>EN</span> ▾</button>
+        <div class="langMenu">
+          <button data-lang="en">English</button>
+          <button data-lang="id">Bahasa Indonesia</button>
+          <button data-lang="zh">中文</button>
+        </div>
+      </div>
+      <button class="iconBtn" id="themeBtn" title="theme" aria-label="Toggle theme"><i>☀</i></button>
+      <a class="btn" href="launch.html" data-i18n="nav.launch">Launch a token</a>
+      <button class="btn solid" id="walletBtn" data-i18n="nav.connect">Connect</button>
     </div>
   </div>
 
   <div class="hero">
     <div>
-      <h2>Only agents<br/>can open a launch<em>.</em></h2>
-      <p>Every token on Agent Pad was created by a wallet holding a Binance Agent ID. No anonymous deploys,
-         no creator wallet that vanishes. The curve holds the whole supply, the graduation pool is locked,
-         and the creator's cut is paid on chain.</p>
+      <h2><span data-i18n="hero.h1a">Only agents</span><br/><span data-i18n="hero.h1b">can open a launch</span><em>.</em></h2>
+      <p data-i18n="hero.p">Every token on Agent Pad was created by a wallet holding a Binance Agent ID. No anonymous deploys, no creator wallet that vanishes. The curve holds the whole supply, the graduation pool is locked, and the creator's cut is paid on chain.</p>
       <div class="facts">
-        <div>launch fee<b>0.002 BNB</b></div>
-        <div>trade fee<b>1%</b></div>
-        <div>creator cut<b>0.70%</b></div>
-        <div>graduation<b>8 BNB</b></div>
+        <div><span data-i18n="hero.f1">launch fee</span><b>0.002 BNB</b></div>
+        <div><span data-i18n="hero.f2">trade fee</span><b>1%</b></div>
+        <div><span data-i18n="hero.f3">creator cut</span><b>0.70%</b></div>
+        <div><span data-i18n="hero.f4">graduation</span><b>8 BNB</b></div>
       </div>
     </div>
     <div class="art"><img src="mascot-mix.svg" alt="Agent Pad mascot"/></div>
   </div>
 
   <div class="strip">
-    <div class="cell"><div class="k">launches</div><div class="v" id="sLaunches">—</div></div>
-    <div class="cell"><div class="k">graduated</div><div class="v" id="sGrad">—</div></div>
-    <div class="cell"><div class="k">volume</div><div class="v" id="sVol">—</div></div>
-    <div class="cell"><div class="k">creators</div><div class="v" id="sCreators">—</div></div>
+    <div class="cell"><div class="k" data-i18n="stat.launches">launches</div><div class="v" id="sLaunches">—</div></div>
+    <div class="cell"><div class="k" data-i18n="stat.grad">graduated</div><div class="v" id="sGrad">—</div></div>
+    <div class="cell"><div class="k" data-i18n="stat.vol">volume</div><div class="v" id="sVol">—</div></div>
+    <div class="cell"><div class="k" data-i18n="stat.creators">creators</div><div class="v" id="sCreators">—</div></div>
+  </div>
+
+  <div class="steps reveal">
+    <div class="step">
+      <div class="no" data-i18n="steps.1n">step 01</div>
+      <h4 data-i18n="steps.1h">Create</h4>
+      <p data-i18n="steps.1p">An Agent ID holder pays 0.002 BNB. The token deploys with a fixed supply and the whole supply goes into its curve, in one transaction.</p>
+    </div>
+    <div class="step">
+      <div class="no" data-i18n="steps.2n">step 02</div>
+      <h4 data-i18n="steps.2h">Agent window</h4>
+      <p data-i18n="steps.2p">For 30 minutes only wallets holding an Agent ID can buy. After that the curve opens to everyone.</p>
+    </div>
+    <div class="step">
+      <div class="no" data-i18n="steps.3n">step 03</div>
+      <h4 data-i18n="steps.3h">Trade</h4>
+      <p data-i18n="steps.3p">Buys and sells run against virtual reserves. There is no pool to snipe, and selling back always works.</p>
+    </div>
+    <div class="step">
+      <div class="no" data-i18n="steps.4n">step 04</div>
+      <h4 data-i18n="steps.4h">Graduate</h4>
+      <p data-i18n="steps.4p">At 8 BNB the curve closes and pairs on PancakeSwap. The LP tokens go to a locker with no withdraw path.</p>
+    </div>
   </div>
 
   <div class="sectionTitle">
-    <h3>Launches</h3>
+    <h3 data-i18n="list.t">Launches</h3>
     <span id="feedNote">—</span>
   </div>
 
   <div class="rows" id="rows">
-    <div class="empty">loading…</div>
+    <div class="sk"></div><div class="sk"></div><div class="sk"></div>
   </div>
 
   <div class="foot">
-    <span>Agent Pad · agent-gated launchpad · BNB Chain</span>
-    <span><a href="launch.html">launch</a> · <a href="https://github.com/agentpad-labs/agentpad" target="_blank" rel="noreferrer">source</a></span>
+    <span data-i18n="foot.left">Agent Pad · agent-gated launchpad · BNB Chain</span>
+    <span>
+      <a href="launch.html" data-i18n="foot.launch">launch</a> ·
+      <a href="https://github.com/agentpad-labs/agentpad" target="_blank" rel="noreferrer" data-i18n="foot.source">source</a>
+    </span>
   </div>
 </div>
 
@@ -68,12 +101,13 @@
 
 <div class="sheetWrap" id="pickWrap">
   <div class="pick">
-    <div class="hd"><span>connect wallet</span><span id="pickClose" style="cursor:pointer">✕</span></div>
+    <div class="hd"><span data-i18n="pick.title">connect wallet</span><span id="pickClose" style="cursor:pointer">✕</span></div>
     <div class="bd" id="pickList"></div>
   </div>
 </div>
 
 <script src="config.js"></script>
+<script src="i18n.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

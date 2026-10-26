@@ -7,6 +7,7 @@
   const $ = (id) => document.getElementById(id);
   const S = { read: null, signer: null, account: null, launches: [], curve: null, token: null, mkt: null, justConnected: 0 };
 
+  const T = (k) => (window.AP_I18N ? window.AP_I18N.t(k) : k);
   const short = (a) => (a ? a.slice(0, 6) + "…" + a.slice(-4) : "—");
   const fmtBnb = (wei) => {
     if (wei === null || wei === undefined) return "—";
@@ -68,12 +69,12 @@
     const url = location.href.split("#")[0];
     const opts = [
       {
-        nm: hasInjected() ? "Wallet in this browser" : "Wallet in this browser (none found)",
-        nt: hasInjected() ? "tap here" : "—",
-        fn: async () => (hasInjected() ? connectInjected() : (await copy(url), toast("open this page inside your wallet browser", true))),
+        nm: T("pick.injected") + (hasInjected() ? "" : " (" + T("pick.none") + ")"),
+        nt: hasInjected() ? T("pick.tap") : "—",
+        fn: async () => (hasInjected() ? connectInjected() : (await copy(url), toast(T("pick.noWallet"), true))),
       },
-      { nm: "WalletConnect", nt: "QR scan", fn: () => connectWC() },
-      { nm: "Copy page link", nt: "—", fn: async () => (await copy(url), toast("link copied")) },
+      { nm: T("pick.wc"), nt: T("pick.wcnote"), fn: () => connectWC() },
+      { nm: T("pick.copy"), nt: "—", fn: async () => (await copy(url), toast(T("pick.copied"))) },
     ];
     $("pickList").innerHTML = opts
       .map((o, i) => `<div class="r" data-i="${i}"><span style="border:0;padding:0">${o.nm}</span><span>${o.nt}</span></div>`)
@@ -106,7 +107,7 @@
 
   async function connectInjected() {
     if (!window.ethereum) throw new Error("no wallet in this browser");
-    toast("opening wallet…");
+    toast(T("toast.opening"));
     const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
     if (!accounts || !accounts.length) throw new Error("no account");
     const provider = new ethers.BrowserProvider(window.ethereum);
@@ -114,7 +115,7 @@
     if (Number(net.chainId) !== CFG.chainId) {
       try {
         await window.ethereum.request({ method: "wallet_switchEthereumChain", params: [{ chainId: "0x" + CFG.chainId.toString(16) }] });
-      } catch (e) { throw new Error("switch to BNB Smart Chain first"); }
+      } catch (e) { throw new Error(T("toast.switch")); }
     }
     attach(await provider.getSigner(), accounts[0]);
     window.ethereum.on?.("accountsChanged", (a) => { if (!a || !a.length) softOff(); });
@@ -122,7 +123,7 @@
   }
 
   async function connectWC() {
-    toast("opening wallet…");
+    toast(T("toast.opening"));
     const mod = await import("https://cdn.jsdelivr.net/npm/@walletconnect/ethereum-provider@2.21.0/+esm");
     const Eth = mod.EthereumProvider || mod.default;
     const wc = await Eth.init({
@@ -143,7 +144,7 @@
     const b = $("walletBtn");
     if (b) { b.textContent = short(S.account); b.classList.add("solid"); }
     closePick();
-    toast("connected " + short(S.account));
+    toast(T("toast.connected") + " " + short(S.account));
     onAccount();
   }
 
@@ -171,9 +172,9 @@
     return `<a class="row" href="token.html?id=${l.id}">
       <div class="no">${String(l.id).padStart(3, "0")}</div>
       <div class="nm">${esc(l.name)}<small>${esc(l.symbol)} · ${short(l.token)}</small></div>
-      <div class="num">${fmtBnb(l.raisedWei)}<br/><small style="color:var(--ink2)">BNB raised</small></div>
-      <div class="num">${fmtBnb(l.priceWei)}<br/><small style="color:var(--ink2)">price</small></div>
-      <div class="bar"><i style="width:${pct}%"></i></div>
+      <div class="num">${fmtBnb(l.raisedWei)}<br/><small>${T("row.raised")}</small></div>
+      <div class="num">${fmtBnb(l.priceWei)}<br/><small>${T("row.price")}</small></div>
+      <div class="barWrap"><i style="--w:${pct}%"></i></div>
       <div class="arrow">→</div>
     </a>`;
   }
@@ -185,17 +186,24 @@
     const rows = $("rows");
     if (!rows) return;
     if (!S.launches.length) {
-      rows.innerHTML = `<div class="empty">${CFG.demo ? "sample book — nothing is deployed yet" : "no launches yet — be the first agent"}</div>`;
+      rows.innerHTML = `<div class="empty">${CFG.demo ? T("list.demo") : T("list.empty")}</div>`;
     } else {
       rows.innerHTML = S.launches.map(row).join("");
     }
     const grad = S.launches.filter((l) => l.graduated).length;
     const vol = S.launches.reduce((a, l) => a + Number(l.raisedWei || 0), 0);
     const creators = new Set(S.launches.map((l) => (l.creator || "").toLowerCase())).size;
-    $("sLaunches").textContent = S.launches.length;
-    $("sGrad").textContent = grad;
+    const cu = window.AP_UI && window.AP_UI.countUp;
+    if (cu) {
+      cu($("sLaunches"), S.launches.length);
+      cu($("sGrad"), grad);
+      cu($("sCreators"), creators);
+    } else {
+      $("sLaunches").textContent = S.launches.length;
+      $("sGrad").textContent = grad;
+      $("sCreators").textContent = creators;
+    }
     $("sVol").textContent = fmtBnb(String(vol)) + " BNB";
-    $("sCreators").textContent = creators;
     $("feedNote").textContent = d.updatedAt ? "updated " + new Date(d.updatedAt).toISOString().slice(11, 16) + "Z" : CFG.demo ? "demo" : "—";
   }
 
@@ -224,9 +232,9 @@
     const stepX = 800 / (pts.length - 1);
     const y = (v) => 200 - ((v - min) / (max - min || 1)) * 180;
     const path = pts.map((p, i) => `${i === 0 ? "M" : "L"}${(i * stepX).toFixed(1)},${y(p[1]).toFixed(1)}`).join(" ");
-    svg.innerHTML = `<path d="${path}" fill="none" stroke="#ff3b30" stroke-width="2.5"/>
+    svg.innerHTML = `<path d="${path}" fill="none" class="line" stroke="#e8342a" stroke-width="2.5"/>
       <path d="${path} L800,220 L0,220 Z" fill="#ff3b30" opacity="0.06"/>`;
-    $("chartNote").textContent = trades.length + " trades";
+    $("chartNote").textContent = trades.length + " · " + T("tok.trades");
   }
 
   async function renderToken() {
@@ -319,7 +327,7 @@
       const bal = await reg.balanceOf(S.account);
       const ok = bal > 0n;
       gate.className = "gate " + (ok ? "ok" : "bad");
-      gate.textContent = ok ? "Agent ID found — this wallet can launch." : "No Agent ID on this wallet. Claim one in the Binance app first.";
+      gate.textContent = ok ? T("launch.ok") : T("launch.bad");
       $("createBtn").disabled = !ok || !CFG.factory;
       if (!CFG.factory) gate.textContent += " (factory not deployed yet)";
     } catch (e) {
@@ -360,5 +368,9 @@
     if ($("chart")) renderToken();
   }
 
+  window.addEventListener("ap:lang", () => {
+    if ($("rows")) renderIndex();
+    if ($("chart")) renderToken();
+  });
   window.addEventListener("load", boot);
 })();
