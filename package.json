@@ -1,0 +1,17 @@
+{
+  "name": "agentpad",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Agent Pad - launchpad where only Binance Agent ID holders can create a token",
+  "scripts": {
+    "test": "hardhat test",
+    "compile": "hardhat compile"
+  },
+  "dependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.8",
+    "@nomicfoundation/hardhat-ethers": "^3.0.8",
+    "chai": "^4.5.0",
+    "ethers": "^6.13.4",
+    "hardhat": "^2.22.17"
+  }
+}

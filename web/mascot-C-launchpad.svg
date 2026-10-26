@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 512 512"><defs><radialGradient id="glow" cx="50%" cy="42%" r="55%"><stop offset="0%" stop-color="#0f2b38"/><stop offset="100%" stop-color="#070a0d"/></radialGradient><pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#16323f" stroke-width="1" opacity="0.35"/></pattern></defs><rect width="512" height="512" fill="url(#glow)"/><rect width="512" height="512" fill="url(#grid)" opacity="0.5"/>
+<g transform="translate(256 258)">
+  <path d="M-140 40 h280 a20 20 0 0 1 20 20 v86 a20 20 0 0 1 -20 20 h-280 a20 20 0 0 1 -20 -20 v-86
+           a20 20 0 0 1 20 -20 z" fill="#0b1a22" stroke="#22f0ff" stroke-width="10"/>
+  <path d="M-96 40 v-56 a96 96 0 0 1 192 0 v56" fill="#0b1a22" stroke="#22f0ff" stroke-width="10"/>
+  <rect x="-64" y="-40" width="128" height="66" rx="26" fill="#f2f7f9"/>
+  <circle cx="-26" cy="-8" r="15" fill="#070a0d"/>
+  <circle cx="26" cy="-8" r="15" fill="#070a0d"/>
+  <circle cx="-22" cy="-12" r="5" fill="#ff3ea5"/>
+  <circle cx="30" cy="-12" r="5" fill="#ff3ea5"/>
+  <g fill="#22f0ff">
+    <rect x="-92" y="84" width="40" height="14" rx="7"/>
+    <rect x="52" y="84" width="40" height="14" rx="7"/>
+  </g>
+  <g>
+    <path d="M-26 166 q10 -34 0 -56" fill="none" stroke="#ff3ea5" stroke-width="10" stroke-linecap="round"/>
+    <path d="M0 178 q12 -42 0 -68" fill="none" stroke="#22f0ff" stroke-width="10" stroke-linecap="round"/>
+    <path d="M26 166 q10 -34 0 -56" fill="none" stroke="#ff3ea5" stroke-width="10" stroke-linecap="round"/>
+  </g>
+</g>
+</svg>
