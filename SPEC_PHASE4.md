@@ -32,7 +32,7 @@ vol 24h 34,9 BNB.
 ## 3. Isolasi project #4 (aturan tetap)
 
 - Repo, wallet deployer/treasury, art, Pages, identity — semua baris baru
-- Jangan campur: Lodepass, Pengupunk, Agent Bestiary, NONCE, Ptah
+- Jangan campur: proyek lain mana pun (wallet/kode/identitas tetap terpisah total)
 - Tidak deploy sebelum ACC biaya gas (±0,002–0,005 BNB)
 
 ## 4. Alur baru (ringkas)
