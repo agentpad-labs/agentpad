@@ -1,61 +1,57 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
-describe("GenesisPassport + PadMarket (tahap 4)", function () {
+describe("GenesisPassport (1 gratis + 1 bayar 0,5) + PadMarket", function () {
   let passport, market, usdt, signer, agent, buyer, treasury, owner;
 
   beforeEach(async function () {
     [owner, signer, agent, buyer, treasury] = await ethers.getSigners();
     usdt = await (await ethers.getContractFactory("TestUSDT")).deploy();
-    // server raw-sign (bukan personal_sign) — pola NONCE
     signer = ethers.Wallet.createRandom().connect(ethers.provider);
     await owner.sendTransaction({ to: signer.address, value: ethers.parseEther("1") });
     const GP = await ethers.getContractFactory("GenesisPassport");
-    passport = await GP.deploy(signer.address, ethers.ZeroAddress);
+    passport = await GP.deploy(signer.address, ethers.ZeroAddress, await usdt.getAddress(), treasury.address);
     const PM = await ethers.getContractFactory("PadMarket");
     market = await PM.deploy(await passport.getAddress(), await usdt.getAddress(), treasury.address);
   });
 
-  async function mintFor(agent) {
-    const epoch = 0, promptId = 1;
-    const chainId = (await ethers.provider.getNetwork()).chainId;
+  async function mintFor(agent, promptId = 1) {
+    const epoch = 0, chainId = (await ethers.provider.getNetwork()).chainId;
     const passAddr = await passport.getAddress();
     const authHash = ethers.solidityPackedKeccak256(
       ["address", "uint256", "uint256", "address", "uint256"],
       [agent.address, epoch, promptId, passAddr, chainId]
     );
-    const sig = new ethers.SigningKey(signer.signingKey.privateKey).sign(authHash).serialized
+    const sig = new ethers.SigningKey(signer.signingKey.privateKey).sign(authHash).serialized;
     await passport.connect(agent).mint(epoch, promptId, sig);
- return authHash;
   }
 
-  it("mint via auth signer, auth 1x-pakai", async function () {
+  it("mint gratis #1 via auth; auth 1x-pakai", async function () {
     await mintFor(agent);
     expect(await passport.balanceOf(agent.address)).to.equal(1);
     await expect(passport.connect(agent).mint(0, 1, "0x00")).to.be.reverted;
   });
 
-  it("kuota 2/wallet: revisi mint kedua via auth baru", async function () {
+  it("mint ke-2 bayar 0,5 USDT tanpa auth; ke-3 gak bisa", async function () {
+    await usdt.mint(agent.address, ethers.parseEther("5"));
+    await usdt.connect(agent).approve(await passport.getAddress(), ethers.MaxUint256);
+    const treBefore = await usdt.balanceOf(treasury.address);
+
     await mintFor(agent);
-    // auth prompt baru untuk mint ke-2
-    const epoch = 0, promptId = 5;
-    const chainId = (await ethers.provider.getNetwork()).chainId;
-    const passAddr = await passport.getAddress();
-    const authHash2 = ethers.solidityPackedKeccak256(
-      ["address", "uint256", "uint256", "address", "uint256"],
-      [agent.address, epoch, promptId, passAddr, chainId]
-    );
-    await passport.connect(agent).mint(epoch, promptId, new ethers.SigningKey(signer.signingKey.privateKey).sign(authHash2).serialized);
+    await passport.connect(agent).mintPaid();
     expect(await passport.balanceOf(agent.address)).to.equal(2);
-    // mint ke-3 harus gagal (kuota)
-    const authHash3 = ethers.solidityPackedKeccak256(
-      ["address", "uint256", "uint256", "address", "uint256"],
-      [agent.address, epoch, 7, passAddr, chainId]
-    );
-    await expect(passport.connect(agent).mint(epoch, 7, new ethers.SigningKey(signer.signingKey.privateKey).sign(authHash3).serialized)).to.be.reverted;
+    expect(await usdt.balanceOf(treasury.address)).to.equal(treBefore + ethers.parseEther("0.5"));
+
+    await expect(passport.connect(agent).mintPaid()).to.be.reverted;
+  });
+
+  it("mintPaid tanpa saldo USDT → revert", async function () {
+    await expect(passport.connect(agent).mintPaid()).to.be.reverted;
   });
 
   it("market: list → buy, fee 2% ke treasury", async function () {
+    await usdt.mint(agent.address, ethers.parseEther("5"));
+    await usdt.connect(agent).approve(await passport.getAddress(), ethers.MaxUint256);
     await mintFor(agent);
     const tid = 1;
     await passport.connect(agent).approve(await market.getAddress(), tid);
@@ -74,6 +70,8 @@ describe("GenesisPassport + PadMarket (tahap 4)", function () {
   });
 
   it("market: cancel oleh seller", async function () {
+    await usdt.mint(agent.address, ethers.parseEther("5"));
+    await usdt.connect(agent).approve(await passport.getAddress(), ethers.MaxUint256);
     await mintFor(agent);
     const tid = 1;
     await passport.connect(agent).approve(await market.getAddress(), tid);

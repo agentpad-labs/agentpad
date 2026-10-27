@@ -5,6 +5,7 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 /// @title Genesis Passport — keping "agent-earned" ala NONCE, profil ringan.
 /// Mint gratis, kuota lifetime 2/wallet, pintu Agent ID, server-sign auth 1x-pakai.
@@ -17,6 +18,9 @@ contract GenesisPassport is ERC721, Ownable {
 
     address public signer;          // signer pad (terbit MintAuthorization)
     address public agentRegistry;   // registry Binance Agent ID (0x60B9…022F)
+    IERC20 public usdt;             // pembayaran mint ke-2
+    address public treasury;        // tujuan pembayaran
+    uint256 public constant PAID_PRICE = 0.5 ether; // 0,5 USDT (18 des)
     uint256 public totalMinted;
     uint256 public challengeEpoch;  // bump = invalidasi auth lama
     mapping(address => uint256) public mintedByWallet;
@@ -30,13 +34,16 @@ contract GenesisPassport is ERC721, Ownable {
     error NotAgentHolder();
     error BadAuth();
     error AuthUsed();
+    error PaymentFailed();
 
-    constructor(address initialSigner_, address agentRegistry_)
+    constructor(address initialSigner_, address agentRegistry_, address usdt_, address treasury_)
         ERC721("Agent Pad Genesis", "PASG")
         Ownable(msg.sender)
     {
         signer = initialSigner_;
         agentRegistry = agentRegistry_;
+        usdt = IERC20(usdt_);
+        treasury = treasury_;
     }
 
     // ---- ABI registry Agent ID (minimal, 2 fungsi yang dipakai NONCE-gate)
@@ -81,6 +88,16 @@ contract GenesisPassport is ERC721, Ownable {
         emit PassportMinted(msg.sender, tid, authHash);
     }
 
+    /// @notice mint ke-2: bayar 0,5 USDT, gak butuh signature (kuota total tetap 2)
+    function mintPaid() external {
+        if (totalMinted + 1 > MAX_SUPPLY) revert SoldOut();
+        if (mintedByWallet[msg.sender] >= MAX_PER_WALLET) revert QuotaReached();
+        if (!usdt.transferFrom(msg.sender, treasury, PAID_PRICE)) revert PaymentFailed();
+        mintedByWallet[msg.sender] += 1;
+        uint256 tid = ++totalMinted;
+        _mint(msg.sender, tid);
+    }
+
     // ---- admin
     function setSigner(address s) external onlyOwner {
         emit SignerChanged(signer, s);
@@ -91,5 +108,8 @@ contract GenesisPassport is ERC721, Ownable {
     }
     function setAgentRegistry(address r) external onlyOwner {
         agentRegistry = r;
+    }
+    function setTreasury(address t) external onlyOwner {
+        treasury = t;
     }
 }
