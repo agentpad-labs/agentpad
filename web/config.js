@@ -14,5 +14,9 @@ window.AGENTPAD = {
   agentWindow: 1800, // 30 minutes
   wcProjectId: "5e2f89a9606073fc5f4e3713925259c7",
   dataUrl: "data/launches.json",
+  usdt: "0x55d398326f99059ff775485246999027b3197955",
+  passport: "0xf0C7eE38251281DC2947ee3272b4AD1643f3682a",
+  challengeApi: "https://directors-sleeve-volume-gig.trycloudflare.com", // challenge API (cloudflared tunnel), TTL 90 dtk
+  market: "0x9230edC3067A2076B6C37d4E9230065Ae95568cd",
   demo: false,
 };
