@@ -12,11 +12,7 @@ interface IERC20Balance {
 contract LPLocker {
     event Locked(address indexed lpToken, uint256 amount, address indexed pair, uint256 launchId);
 
-    address public immutable factory;
-
-    constructor(address factory_) {
-        factory = factory_;
-    }
+    constructor(address /*factory_*/ ) {}
 
     function lockedBalance(address lpToken) external view returns (uint256) {
         return IERC20Balance(lpToken).balanceOf(address(this));
